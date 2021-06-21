@@ -1,21 +1,23 @@
 package service;
 
+import com.nocompanyyet.asset.Card;
 import player.Player;
 
 import java.io.IOException;
 import java.util.Scanner;
 
 public class IOService {
+    // I pass this method a text variable to print who's deck have printed now
     public static void printPlayerDeck(String text, Player player) {
         System.out.println(text);
-        for (Integer i: player.getOwnDeck())
-            System.out.print(i + " ");
+        for (Card i: player.getOwnDeck())
+            System.out.print(i.getValue() + " ");
         System.out.println();
     }
 
-    public static void printCurrentMove(Player attacking, Player defending, Integer attackersCard, Integer defendersCard) {
-        System.out.println("Attack points: " + attackersCard);
-        System.out.println("Defend points: " + defendersCard);
+    public static void printCurrentMove(Player attacking, Player defending, Card attackersCard, Card defendersCard) {
+        System.out.println("Attack points: " + attackersCard.getValue());
+        System.out.println("Defend points: " + defendersCard.getValue());
         printPlayerDeck("Attacker's deck: ", attacking);
         printPlayerDeck("Defender's deck: ", defending);
         System.out.printf("%s's score: %d\n", attacking.getName(), attacking.getOwnScore());
@@ -53,7 +55,7 @@ public class IOService {
             if(!(playerType >= 1 && playerType <= 4))
                 throw new IOException();
         }
-        catch(IOException e) {
+        catch(Exception e) {
             playerType = ExceptionHandlingService.handleWrongIntegerInputException(playerType, 1, 4);
         }
         return playerType;

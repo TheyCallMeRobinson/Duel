@@ -1,5 +1,6 @@
 package service;
 
+import com.nocompanyyet.asset.Card;
 import com.nocompanyyet.asset.Pair;
 import player.Human;
 import player.Player;
@@ -8,11 +9,7 @@ import player.ai.BotEasy;
 import player.ai.BotHard;
 import player.ai.BotMedium;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.Scanner;
-import java.util.Set;
 
 public class GameService {
     public static void createNewGame() {
@@ -27,10 +24,13 @@ public class GameService {
         gameCycle(first, second);
     }
 
+    // game cycle, at the beginning we get attacking and defending player, ask them for their cards and give
+    // penalty (if there's any) to the defending player, after that output everything into console and make bots to
+    // "memorise" what card was used now and what cards opponent's deck contains now
     public static void gameCycle(Player attacking, Player defending) {
         while (attacking.getOwnDeck().size() > 0 && defending.getOwnDeck().size() > 0) {
-            Integer attack = -1;
-            Integer defend = -1;
+            Card attack = new Card(-1);
+            Card defend = new Card(-1);
             try {
                 attack = attacking.requestCard(State.ATTACKING);
                 defend = defending.requestCard(State.DEFENDING);
@@ -38,12 +38,12 @@ public class GameService {
             catch (Exception e) {
                 e.printStackTrace();
             }
-            defending.setOwnScore(defending.getOwnScore() + Math.max(attack - defend, 0));
-            IOService.printCurrentMove(attacking, defending, attack, defend);
+            defending.setOwnScore(defending.getOwnScore() + Math.max(attack.getValue() - defend.getValue(), 0));
             attacking.getOwnDeck().remove(attack);
             defending.getOwnDeck().remove(defend);
             attacking.getKnownOpponentDeck().remove(defend);
             defending.getKnownOpponentDeck().remove(attack);
+            IOService.printCurrentMove(attacking, defending, attack, defend);
             Player temp = attacking;
             attacking = defending;
             defending = temp;
@@ -55,11 +55,12 @@ public class GameService {
         player.setOwnDeck(new ArrayList<>());
         player.setKnownOpponentDeck(new ArrayList<>());
         for(int i = 0; i < 12; i++) {
-            player.getOwnDeck().add(i);
-            player.getKnownOpponentDeck().add(i);
+            player.getOwnDeck().add(new Card(i));
+            player.getKnownOpponentDeck().add(new Card(i));
         }
     }
 
+    // method for giving a human player choice of whoever he wants to play with
     private static Pair<Player> choosePlayers() {
         Integer firstPlayerType = IOService.requestPlayerType("first");
         Integer secondPlayerType = IOService.requestPlayerType("second");

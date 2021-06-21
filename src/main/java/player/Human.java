@@ -1,5 +1,6 @@
 package player;
 
+import com.nocompanyyet.asset.Card;
 import com.nocompanyyet.asset.State;
 import service.ExceptionHandlingService;
 import service.IOService;
@@ -12,12 +13,16 @@ public class Human extends Player {
         this.name = IOService.requestPlayerName();
     }
 
-    public Integer requestCard(State state) {
+    // asking human player for his card on current move
+    public Card requestCard(State state) {
         Scanner scn = new Scanner(System.in);
-        Integer card = null;
+        Card card = new Card(-1);
         System.out.printf("%s's turn:\n", this.name);
+        // if he's entered some wrong input or non-existing card in his deck, we throw an exception and immediately
+        // warn him about the mistake and offer him another try
         try {
-            card = scn.nextInt();
+            Integer temp = scn.nextInt();
+            card.setValue(temp);
             if(!this.getOwnDeck().contains(card))
                 throw new NoSuchElementException();
         }

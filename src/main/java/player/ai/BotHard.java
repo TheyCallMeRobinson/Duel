@@ -1,6 +1,7 @@
 package player.ai;
 
 import com.nocompanyyet.asset.BotNames;
+import com.nocompanyyet.asset.Card;
 import com.nocompanyyet.asset.State;
 import player.Player;
 
@@ -30,21 +31,21 @@ public class BotHard extends Player {
         human players and their unpredictability.
      */
 
-    public Integer requestCard(State state) {
+    public Card requestCard(State state) {
         // in case we won't find any suitable card, better not to waste a good one
-        Integer card = this.getOwnDeck().get(0);
-        Integer ownHighCard = this.getOwnDeck().get(this.getOwnDeck().size() - 1);
-        Integer opponentHighCard = this.getKnownOpponentDeck().size() > 1 ? this.getKnownOpponentDeck().get(this.getKnownOpponentDeck().size() - 1) : this.getKnownOpponentDeck().get(0);
+        Card card = this.getOwnDeck().get(0);
+        Card ownHighCard = this.getOwnDeck().get(this.getOwnDeck().size() - 1);
+        Card opponentHighCard = this.getKnownOpponentDeck().size() > 1 ? this.getKnownOpponentDeck().get(this.getKnownOpponentDeck().size() - 1) : this.getKnownOpponentDeck().get(0);
 
         if(state == State.ATTACKING) {
-            Integer predictedOpponentCard = predictPossibleOpponentDefence();
+            Card predictedOpponentCard = predictPossibleOpponentDefence();
             if(this.ownScore < this.opponentScore) {
                 card = this.getOwnDeck().get(0);
             }
             else {
                 Integer differenceInScores = this.ownScore - this.opponentScore;
-                for(Integer bestCard : this.getOwnDeck()) {
-                    if(bestCard > predictedOpponentCard + differenceInScores) {
+                for(Card bestCard : this.getOwnDeck()) {
+                    if(bestCard.getValue() > predictedOpponentCard.getValue() + differenceInScores) {
                         card = bestCard;
                         break;
                     }
@@ -52,13 +53,13 @@ public class BotHard extends Player {
             }
         }
         else {
-            Integer predictedOpponentCard = predictPossibleOpponentAttack();
+            Card predictedOpponentCard = predictPossibleOpponentAttack();
             if(this.ownScore > this.opponentScore) {
-                if(ownHighCard > opponentHighCard) {
+                if(ownHighCard.getValue() > opponentHighCard.getValue()) {
                     card = ownHighCard;
                 } else {
-                    for (Integer bestCard : this.getOwnDeck()) {
-                        if (bestCard >= predictedOpponentCard) {
+                    for (Card bestCard : this.getOwnDeck()) {
+                        if (bestCard.getValue() >= predictedOpponentCard.getValue()) {
                             card = bestCard;
                             break;
                         }
@@ -66,8 +67,8 @@ public class BotHard extends Player {
                 }
             }
             else {
-                for(Integer bestCard : this.getOwnDeck()) {
-                    if(bestCard >= opponentHighCard) {
+                for(Card bestCard : this.getOwnDeck()) {
+                    if(bestCard.getValue() >= opponentHighCard.getValue()) {
                         card = bestCard;
                         break;
                     }
@@ -78,13 +79,13 @@ public class BotHard extends Player {
         return card;
     }
 
-    private Integer predictPossibleOpponentAttack() {
+    private Card predictPossibleOpponentAttack() {
         // quadratic probability distribution
         int predictedPositionOfCard = (int)Math.sqrt(Math.random() * knownOpponentDeck.size() * knownOpponentDeck.size());
         return knownOpponentDeck.get(predictedPositionOfCard);
     }
 
-    private Integer predictPossibleOpponentDefence() {
+    private Card predictPossibleOpponentDefence() {
         int halfDeckSize = knownOpponentDeck.size() / 2;
         // quadratic probability distribution, starts from the middle of the deck
         int predictedPositionOfCard = (int)Math.sqrt(Math.random() * halfDeckSize * halfDeckSize);
