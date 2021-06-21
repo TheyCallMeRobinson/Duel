@@ -6,6 +6,7 @@ public class Card {
     public Card(Integer value) {
         this.value = value;
     }
+
     public void setValue(Integer value) {
         this.value = value;
     }
