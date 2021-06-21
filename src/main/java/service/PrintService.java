@@ -1,6 +1,6 @@
 package service;
 
-import com.nocompanyyet.Player;
+import player.Player;
 
 public class PrintService {
     public static void printPlayerDeck(String text, Player player) {

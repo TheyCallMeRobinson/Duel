@@ -1,4 +1,7 @@
-package com.nocompanyyet;
+package player.ai;
+
+import com.nocompanyyet.asset.State;
+import player.Player;
 
 public class BotEasy extends Player {
     public BotEasy(String name) {

@@ -1,4 +1,7 @@
-package com.nocompanyyet;
+package player.ai;
+
+import com.nocompanyyet.asset.State;
+import player.Player;
 
 public class BotHard extends Player {
     public BotHard(String name) {

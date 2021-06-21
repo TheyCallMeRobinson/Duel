@@ -1,4 +1,6 @@
-package com.nocompanyyet;
+package player;
+
+import com.nocompanyyet.asset.State;
 
 import java.util.NoSuchElementException;
 import java.util.Scanner;

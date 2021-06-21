@@ -1,4 +1,4 @@
-package com.nocompanyyet;
+package com.nocompanyyet.asset;
 
 public enum State {
     ATTACKING,

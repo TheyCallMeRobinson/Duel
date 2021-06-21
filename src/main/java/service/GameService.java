@@ -1,7 +1,7 @@
 package service;
 
-import com.nocompanyyet.Player;
-import com.nocompanyyet.State;
+import player.Player;
+import com.nocompanyyet.asset.State;
 
 import java.util.ArrayList;
 
@@ -29,8 +29,8 @@ public class GameService {
             PrintService.printCurrentMove(attacking, defending, attack, defend);
             attacking.getOwnDeck().remove(attack);
             defending.getOwnDeck().remove(defend);
-            attacking.setKnownOpponentDeck(defending.getOwnDeck());
-            defending.setKnownOpponentDeck(attacking.getOwnDeck());
+            attacking.getKnownOpponentDeck().remove(defend);
+            defending.getKnownOpponentDeck().remove(attack);
             Player temp = attacking;
             attacking = defending;
             defending = temp;
