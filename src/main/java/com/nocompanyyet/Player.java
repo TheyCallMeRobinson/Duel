@@ -15,8 +15,6 @@ public abstract class Player {
 
     public abstract Integer requestCard(State state);
 
-
-
     public void setOwnScore(Integer ownScore) {
         this.ownScore = ownScore;
     }

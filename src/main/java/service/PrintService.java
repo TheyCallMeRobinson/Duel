@@ -19,4 +19,13 @@ public class PrintService {
         System.out.printf("%s's score: %d\n", defending.getName(), defending.getOwnScore());
         System.out.println("\n");
     }
+
+    public static void printFinalScores(Player first, Player second) {
+        if (first.getOwnScore() < second.getOwnScore())
+            System.out.printf("The winner is %s with final score of: %d", first.getName(), first.getOwnScore());
+        else if (first.getOwnScore() > second.getOwnScore())
+            System.out.printf("The winner is %s with final score of: %d", second.getName(), second.getOwnScore());
+        else
+            System.out.println("Tie");
+    }
 }

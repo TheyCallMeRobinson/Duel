@@ -22,15 +22,20 @@ public class GameService {
                 attack = attacking.requestCard(State.ATTACKING);
                 defend = defending.requestCard(State.DEFENDING);
             }
-            catch (Exception ignored) {}
+            catch (Exception e) {
+                e.printStackTrace();
+            }
             defending.setOwnScore(defending.getOwnScore() + Math.max(attack - defend, 0));
             PrintService.printCurrentMove(attacking, defending, attack, defend);
+            attacking.getOwnDeck().remove(attack);
+            defending.getOwnDeck().remove(defend);
             attacking.setKnownOpponentDeck(defending.getOwnDeck());
             defending.setKnownOpponentDeck(attacking.getOwnDeck());
             Player temp = attacking;
             attacking = defending;
             defending = temp;
         }
+        PrintService.printFinalScores(attacking, defending);
     }
 
     private static void fillDeck(Player player) {
