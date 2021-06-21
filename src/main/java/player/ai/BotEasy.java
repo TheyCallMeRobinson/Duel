@@ -1,11 +1,12 @@
 package player.ai;
 
+import com.nocompanyyet.asset.BotNames;
 import com.nocompanyyet.asset.State;
 import player.Player;
 
 public class BotEasy extends Player {
-    public BotEasy(String name) {
-        super(name);
+    public BotEasy() {
+        this.name = BotNames.EASY_AI.get((int)(BotNames.EASY_AI.size() * Math.random()));
     }
 
     public Integer requestCard(State state) {

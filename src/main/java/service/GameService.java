@@ -1,12 +1,25 @@
 package service;
 
+import com.nocompanyyet.asset.Pair;
+import player.Human;
 import player.Player;
 import com.nocompanyyet.asset.State;
+import player.ai.BotEasy;
+import player.ai.BotHard;
+import player.ai.BotMedium;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.Scanner;
+import java.util.Set;
 
 public class GameService {
-    public static void createNewGame(Player first, Player second) {
+    public static void createNewGame() {
+        Player first, second;
+        Pair<Player> pair = choosePlayers();
+        first = pair.getFirst();
+        second = pair.getSecond();
         first.setOwnScore(0);
         second.setOwnScore(0);
         fillDeck(first);
@@ -26,7 +39,7 @@ public class GameService {
                 e.printStackTrace();
             }
             defending.setOwnScore(defending.getOwnScore() + Math.max(attack - defend, 0));
-            PrintService.printCurrentMove(attacking, defending, attack, defend);
+            IOService.printCurrentMove(attacking, defending, attack, defend);
             attacking.getOwnDeck().remove(attack);
             defending.getOwnDeck().remove(defend);
             attacking.getKnownOpponentDeck().remove(defend);
@@ -35,7 +48,7 @@ public class GameService {
             attacking = defending;
             defending = temp;
         }
-        PrintService.printFinalScores(attacking, defending);
+        IOService.printFinalScores(attacking, defending);
     }
 
     private static void fillDeck(Player player) {
@@ -45,5 +58,40 @@ public class GameService {
             player.getOwnDeck().add(i);
             player.getKnownOpponentDeck().add(i);
         }
+    }
+
+    private static Pair<Player> choosePlayers() {
+        Integer firstPlayerType = IOService.requestPlayerType("first");
+        Integer secondPlayerType = IOService.requestPlayerType("second");
+        Pair<Player> pair = new Pair<>();
+        switch (firstPlayerType){
+            case 1:
+                pair.setFirst(new BotEasy());
+                break;
+            case 2:
+                pair.setFirst(new BotMedium());
+                break;
+            case 3:
+                pair.setFirst(new BotHard());
+                break;
+            case 4:
+                pair.setFirst(new Human());
+                break;
+        }
+        switch (secondPlayerType) {
+            case 1:
+                pair.setSecond(new BotEasy());
+                break;
+            case 2:
+                pair.setSecond(new BotMedium());
+                break;
+            case 3:
+                pair.setSecond(new BotHard());
+                break;
+            case 4:
+                pair.setSecond(new Human());
+                break;
+        }
+        return pair;
     }
 }

@@ -1,11 +1,12 @@
 package player.ai;
 
+import com.nocompanyyet.asset.BotNames;
 import com.nocompanyyet.asset.State;
 import player.Player;
 
 public class BotHard extends Player {
-    public BotHard(String name) {
-        super(name);
+    public BotHard() {
+        this.name = BotNames.HARD_AI.get((int)(BotNames.HARD_AI.size() * Math.random()));
     }
 
     /*
@@ -77,16 +78,16 @@ public class BotHard extends Player {
         return card;
     }
 
-    private Integer predictPossibleOpponentDefence() {
-        int halfDeckSize = knownOpponentDeck.size() / 2;
-        // quadratic probability distribution
-        int predictedPositionOfCard = (int)Math.sqrt(Math.random() * halfDeckSize * halfDeckSize);
-        return knownOpponentDeck.get(halfDeckSize + predictedPositionOfCard);
-    }
-
     private Integer predictPossibleOpponentAttack() {
         // quadratic probability distribution
         int predictedPositionOfCard = (int)Math.sqrt(Math.random() * knownOpponentDeck.size() * knownOpponentDeck.size());
         return knownOpponentDeck.get(predictedPositionOfCard);
+    }
+
+    private Integer predictPossibleOpponentDefence() {
+        int halfDeckSize = knownOpponentDeck.size() / 2;
+        // quadratic probability distribution, starts from the middle of the deck
+        int predictedPositionOfCard = (int)Math.sqrt(Math.random() * halfDeckSize * halfDeckSize);
+        return knownOpponentDeck.get(halfDeckSize + predictedPositionOfCard);
     }
 }

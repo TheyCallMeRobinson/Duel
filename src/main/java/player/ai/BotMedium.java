@@ -1,11 +1,12 @@
 package player.ai;
 
+import com.nocompanyyet.asset.BotNames;
 import com.nocompanyyet.asset.State;
 import player.Player;
 
 public class BotMedium extends Player {
-    public BotMedium(String name) {
-        super(name);
+    public BotMedium() {
+        this.name = BotNames.MEDIUM_AI.get((int)(BotNames.MEDIUM_AI.size() * Math.random()));
     }
 
     public Integer requestCard(State state) {

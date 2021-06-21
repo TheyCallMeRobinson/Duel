@@ -2,7 +2,10 @@ package service;
 
 import player.Player;
 
-public class PrintService {
+import java.io.IOException;
+import java.util.Scanner;
+
+public class IOService {
     public static void printPlayerDeck(String text, Player player) {
         System.out.println(text);
         for (Integer i: player.getOwnDeck())
@@ -27,5 +30,32 @@ public class PrintService {
             System.out.printf("The winner is %s with final score of: %d", second.getName(), second.getOwnScore());
         else
             System.out.println("Tie");
+    }
+
+    public static String requestPlayerName() {
+        Scanner scn = new Scanner(System.in);
+        System.out.println("Enter your name: ");
+        return scn.nextLine();
+    }
+
+    public static Integer requestPlayerType(String text) {
+        Scanner scn = new Scanner(System.in);
+        Integer playerType = -1;
+        System.out.printf(
+                "Enter number to place this player as %s:\n" +
+                "1) Easy AI\n" +
+                "2) Medium AI\n" +
+                "3) Hard AI\n" +
+                "4) Human player\n", text
+        );
+        try {
+            playerType = scn.nextInt();
+            if(!(playerType >= 1 && playerType <= 4))
+                throw new IOException();
+        }
+        catch(IOException e) {
+            playerType = ExceptionHandlingService.handleWrongIntegerInputException(playerType, 1, 4);
+        }
+        return playerType;
     }
 }

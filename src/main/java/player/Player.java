@@ -11,10 +11,6 @@ public abstract class Player {
     protected List<Integer> ownDeck;
     protected List<Integer> knownOpponentDeck;
 
-    public Player(String name) {
-        this.name = name;
-    }
-
     public abstract Integer requestCard(State state);
 
     public void setOwnScore(Integer ownScore) {
